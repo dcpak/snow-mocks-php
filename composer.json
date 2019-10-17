@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "classmap": [
+      "src/"
+    ]
+  },
+  "require": {
+    "monolog/monolog": "1.0.*",
+    "phpunit/phpunit": "8.4.1",
+    "phpunit/php-code-coverage": "^7.0"
+  }
+}
