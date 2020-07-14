@@ -4,8 +4,7 @@ Snow Mocks
 ## Build
 You can build this project using `composer`. You can download composer package manger from: https://getcomposer.org/download/  
 
-Project uses phpunit version 9 that requires a PHP 7.3 or PHP 7.4 (https://phpunit.de/getting-started/phpunit-9.html)  
-For additional code coverage also XDebug needs to be installed (https://xdebug.org/wizard)
+Project uses phpunit version 9 that requires a PHP 7.3 or PHP 7.4 (https://phpunit.de/getting-started/phpunit-9.html)
 
 Build project  
 ``composer install``
@@ -28,6 +27,13 @@ Your task is to implement SnowRescueService class - this is your System Under Te
 5. If temperature drops below -10 and snowfall exceed 10 mm, send three snowplows, a sander and notify press. 
 
 
+External dependencies:
+* `WeatherForecastService`
+* `MunicipalServices`
+* `PressService`
+		
+System Under Test:
+* `SnowRescueService.checkForecastAndRescue`
 
 
 ## Zadanie
@@ -53,8 +59,3 @@ Systemy zewnętrzne:
 Do zaimplementowania:
 * `SnowRescueService.checkForecastAndRescue`
 
-
-## Additional info
-
-Handling test doubles in phpunit:  
-https://phpunit.de/manual/6.5/en/test-doubles.html  
