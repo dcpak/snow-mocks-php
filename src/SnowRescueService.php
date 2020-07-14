@@ -17,10 +17,18 @@ class SnowRescueService
     {
       if($this->weatherForecastService->getAverageTemperatureInCelsius() < 0)
         $this->municipalServices->sendSander();
-      if($this->weatherForecastService->getSnowFallHeightInMM() > 5)
-        $this->municipalServices->sendSnowplow();
-      if($this->weatherForecastService->getSnowFallHeightInMM() > 3)
-        $this->municipalServices->sendSnowplow();
+      try {
+        if($this->weatherForecastService->getSnowFallHeightInMM() > 5)
+          $this->municipalServices->sendSnowplow();
+        if($this->weatherForecastService->getSnowFallHeightInMM() > 3)
+          $this->municipalServices->sendSnowplow();
+      } catch(SnowplowMalfunctioningException $ex) {
+        try {
+          $this->municipalServices->sendSnowplow();
+        } catch(SnowplowMalfunctioningException $ex) {
+
+        }
+      }
 
     }
 }
