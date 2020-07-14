@@ -59,15 +59,38 @@ class SnowRescueServiceTest extends TestCase {
     );
   }
 
+  /*
   public function testSnowplowMalfunction() {
     $service = new SnowRescueService($this->weatherForecastService, $this->municipalServices, $this->pressService);
 
     $this->weatherForecastService->method('getSnowFallHeightInMM')->willReturn(4);
 
-    $this->municipalServices->method('sendSnowplow')->willThrowException(new SnowplowMalfunctioningException());
+    $this->municipalServices->method('sendSnowplow')->will($this->throwException(SnowplowMalfunctioningException::class));
 
     $this->municipalServices->expects($this->exactly(2))->method('sendSnowplow');
 
+    $service->checkForecastAndRescue();
+  }
+  */
+
+  public function testTwoSnowplowsWhenSnowHigherThan5() {
+    $service = new SnowRescueService($this->weatherForecastService, $this->municipalServices, $this->pressService);
+
+    $this->weatherForecastService->method('getSnowFallHeightInMM')->willReturn(6);
+
+    $this->municipalServices->expects($this->exactly(2))->method('sendSnowplow');
+
+    $service->checkForecastAndRescue();
+  }
+
+
+  public function testThreeSnowplowsOneSenderWhenSnowHigherThan10AndTempBelowMinus10() {
+    $service = new SnowRescueService($this->weatherForecastService, $this->municipalServices, $this->pressService);
+    $this->weatherForecastService->method('getAverageTemperatureInCelsius')->willReturn(11);
+    $this->weatherForecastService->method('getSnowFallHeightInMM')->willReturn(11);
+
+    $this->municipalServices->expects($this->exactly(3))->method('sendSnowplow');
+    $this->municipalServices->expects($this->exactly(1))->method('sendSender');
     $service->checkForecastAndRescue();
   }
 
