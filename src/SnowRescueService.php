@@ -15,5 +15,7 @@ class SnowRescueService
 
     public function checkForecastAndRescue(): void
     {
+      if($this->weatherForecastService->getAverageTemperatureInCelsius() < 0)
+        $this->municipalServices->sendSander();
     }
 }
