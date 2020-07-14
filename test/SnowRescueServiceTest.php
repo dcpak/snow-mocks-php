@@ -54,7 +54,21 @@ class SnowRescueServiceTest extends TestCase {
     return array(
       'send_sander_for_temperature_below_0' => array('temp', -1, $this->once(), 'sendSander'),
       'not_send_sander_for_temperature_higer_or_equal_0' => array('temp', 3, $this->never(), 'sendSander'),
-      'send_snowplow_for_snow_up_3mm' => array('snow', 3, $this->once(), 'sendSnowplow'),
+      'send_snowplow_for_snow_up_4mm' => array('snow', 4, $this->once(), 'sendSnowplow'),
+      'not_send_snowplow_for_snow_up_1mm' => array('snow', 1, $this->never(), 'sendSnowplow'),
     );
   }
+
+  public function testSnowplowMalfunction() {
+    $service = new SnowRescueService($this->weatherForecastService, $this->municipalServices, $this->pressService);
+
+    $this->weatherForecastService->method('getSnowFallHeightInMM')->willReturn(4);
+
+    $this->municipalServices->method('sendSnowplow')->willThrowException(new SnowplowMalfunctioningException());
+
+    $this->municipalServices->expects($this->exactly(2))->method('sendSnowplow');
+
+    $service->checkForecastAndRescue();
+  }
+
 }

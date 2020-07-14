@@ -17,5 +17,7 @@ class SnowRescueService
     {
       if($this->weatherForecastService->getAverageTemperatureInCelsius() < 0)
         $this->municipalServices->sendSander();
+      if($this->weatherForecastService->getSnowFallHeightInMM() > 3)
+        $this->municipalServices->sendSnowplow();
     }
 }
