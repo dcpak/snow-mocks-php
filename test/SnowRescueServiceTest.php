@@ -23,11 +23,9 @@ class SnowRescueServiceTest extends TestCase
     {
         $service = new SnowRescueService($this->weatherForecastService, $this->municipalServices, $this->pressService);
 
-        $this->weatherForecastService->method('getAverageTemperatureInCelsius')
-            ->willReturn(-1);
+        $this->weatherForecastService->method('getAverageTemperatureInCelsius')->willReturn(-1);
 
-        $this->municipalServices->expects($this->once())
-            ->method('sendSander');
+        $this->municipalServices->expects($this->once())->method('sendSander');
 
         $service->checkForecastAndRescue();
     }
